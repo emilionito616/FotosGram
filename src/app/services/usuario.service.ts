@@ -12,6 +12,7 @@ const URL = environment.url;
 @Injectable({
   providedIn: 'root'
 })
+
 export class UsuarioService {
   token: string = null;
   private usuario: Usuario = {};
@@ -55,8 +56,10 @@ export class UsuarioService {
   }
 
   getUsuario() {
+    if (!this.usuario._id) {
+      this.validaToken();
+    }
     return {...this.usuario};
-    
   }
 
   async guardarToken(token: string) {

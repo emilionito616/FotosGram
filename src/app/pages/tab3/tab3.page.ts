@@ -7,14 +7,15 @@ import { UsuarioService } from '../../services/usuario.service';
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page implements OnInit{
+export class Tab3Page implements OnInit {
 
   usuario: Usuario = {};
 
   constructor( private usuarioservice: UsuarioService) {}
 
   ngOnInit() {
-
+    this.usuario = this.usuarioservice.getUsuario();
+    
   }
 
   logout() {
