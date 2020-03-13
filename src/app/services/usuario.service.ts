@@ -12,7 +12,6 @@ const URL = environment.url;
 @Injectable({
   providedIn: 'root'
 })
-
 export class UsuarioService {
   token: string = null;
   private usuario: Usuario = {};
@@ -56,7 +55,7 @@ export class UsuarioService {
   }
 
   getUsuario() {
-    if (!this.usuario._id) {
+    if (!this.usuario._id ) {
       this.validaToken();
     }
     return {...this.usuario};
@@ -78,18 +77,35 @@ export class UsuarioService {
       this.navCtrl.navigateRoot('/login');
       return Promise.resolve(false);
     }
-    
+
     return new Promise( resolve => {
       const headers = new HttpHeaders({
         'x-token': this.token
       });
-      
+
       this.http.get(`${URL}/user`, {headers}).subscribe( resp => {
         if (resp['ok']) {
           this.usuario = resp['usuario'];
           resolve(true);
         } else {
           this.navCtrl.navigateRoot('/login');
+          resolve(false);
+        }
+      });
+    });
+  }
+
+  actualizarUsuario(usuario: Usuario) {
+    const headers = new HttpHeaders({
+      'x-token': this.token
+    });
+
+    return new Promise(resolve => {
+      this.http.post(`${URL}/user/update`, usuario, {headers}).subscribe(resp => {
+        if (resp['ok']) {
+          this.guardarToken( resp['token']);
+          resolve(true);
+        } else {
           resolve(false);
         }
       });
