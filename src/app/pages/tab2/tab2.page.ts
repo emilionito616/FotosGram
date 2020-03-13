@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { PostsService } from '../../services/posts.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -7,11 +9,37 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
   tempImages: string[] = [];
+  cargandoGeo = false;
 
-  constructor() {}
+  post = {
+    mensaje: '',
+    coords: null,
+    posicion: false
+  };
 
-  crearPost() {
+  constructor( private postService: PostsService,
+               private route: Router) {}
 
+  async crearPost() {
+    console.log(this.post);
+    const creado = await this.postService.crearPost(this.post);
+
+    this.post = {
+      mensaje: '',
+      coords: null,
+      posicion: false
+    };
+
+    this.route.navigateByUrl('/main/tabs/tab1');
+  }
+
+  getGeo() {
+    if ( !this.post.posicion) {
+      this.post.coords = null;
+      return;
+    }
+    this.cargandoGeo = true;
+    console.log(this.post);
   }
 
 }
