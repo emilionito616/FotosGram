@@ -78,7 +78,7 @@ export class UsuarioService {
       return Promise.resolve(false);
     }
 
-    return new Promise( resolve => {
+    return new Promise<boolean>( resolve => {
       const headers = new HttpHeaders({
         'x-token': this.token
       });
